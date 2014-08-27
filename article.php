@@ -1,12 +1,13 @@
 <?php
-
     include_once("includes/connection.php");
     include_once("includes/article.php");
-
     $article=new Article();
-    $articles=$article->fetch_all();
-?>
 
+    if(isset($_GET['id'])){
+        $id=$_GET['id'];
+        $data=$article->fetch_data($id);
+
+        ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -83,22 +84,22 @@
                 </h1>
 
                 <!-- First Blog Post -->
-                <?php foreach($articles as $article){?>
+
                 <h2>
-                    <a href="article.php?id=<?php echo $article['articleId'];?>"><?php echo $article['articleTitle'];?></a>
+                    <a href="article.php?id=<?php echo $data['articleId'];?>"><?php echo $data['articleTitle'];?></a>
                 </h2>
                 <p class="lead">
                     by <a href="index.php">Admin</a>
                 </p>
-                <p><span class="glyphicon glyphicon-time"></span><?php echo date("l jS",$article["articleDate"]);?></p>
+                <p><span class="glyphicon glyphicon-time"></span><?php echo date("l jS",$data["articleDate"]);?></p>
                 <hr>
                 <img class="img-responsive" src="http://placehold.it/900x200" alt="">
                 <hr>
-                <p style="font-weight: 500;"><?php echo $article["articleContent"];?></p>
-                <a class="btn btn-primary" href="article.php?id=<?php echo $article["articleId"];?>">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+                <p><?php echo $data["articleContent"];?></p>
+                <a class="btn btn-primary" href="index.php"><span class="glyphicon glyphicon-chevron-left"></span>&nbsp;&nbsp;&nbsp;Back</a>
 
                 <hr>
-                <?php }?>
+
                 <!-- Second Blog Post -->
 
 
@@ -204,3 +205,9 @@
 </body>
 
 </html>
+
+    <?php }else{
+        header('Location:index.php');
+        exit();
+    }
+?>
